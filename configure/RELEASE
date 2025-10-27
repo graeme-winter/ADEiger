@@ -5,3 +5,6 @@
 -include $(TOP)/../configure/RELEASE_LIBS_INCLUDE
 -include $(TOP)/RELEASE.local
 -include $(TOP)/configure/RELEASE.local
+EPICS_BASE=/home/graeme/work/necat-e/epics/epics-base
+SUPPORT=/home/graeme/work/necat-e/epics/git/support
+

@@ -6,7 +6,7 @@ errlogInit(20000)
 dbLoadDatabase("$(TOP)/dbd/eigerDetectorApp.dbd")
 eigerDetectorApp_registerRecordDeviceDriver(pdbbase)
 
-epicsEnvSet("PREFIX", "13EIG2:")
+epicsEnvSet("PREFIX", "S24ID:C:")
 epicsEnvSet("PORT",   "EIG")
 epicsEnvSet("QSIZE",  "20")
 epicsEnvSet("XSIZE",  "1030")
@@ -14,7 +14,7 @@ epicsEnvSet("YSIZE",  "1065")
 epicsEnvSet("NCHANS", "2048")
 epicsEnvSet("CBUFFS", "500")
 # This is an Eiger2 500K
-epicsEnvSet("EIGERIP", "10.54.160.13")
+epicsEnvSet("EIGERIP", "164.54.212.29")
 epicsEnvSet("EPICS_DB_INCLUDE_PATH", "$(ADCORE)/db:$(ADEIGER)/db")
 epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES", "5000000")
 
