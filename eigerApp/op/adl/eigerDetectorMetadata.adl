@@ -271,7 +271,7 @@ text {
 	"basic attribute" {
 		clr=14
 	}
-	textix="mm"
+	textix="m"
 }
 "text update" {
 	object {
