@@ -47,8 +47,8 @@
       <action type="open_display">
         <file>eigerDetector.opi</file>
         <macros>
-          <P>13EIG1:</P>
-          <R>cam1:</R>
+          <P>S24ID-C-EIG:</P>
+          <R>CAM:</R>
         </macros>
         <target>tab</target>
         <description>Eiger Detector Control</description>
@@ -65,8 +65,8 @@
       <action type="open_display">
         <file>ADBase.opi</file>
         <macros>
-          <P>13EIG1:</P>
-          <R>cam1:</R>
+          <P>S24ID-C-EIG:</P>
+          <R>CAM:</R>
         </macros>
         <target>tab</target>
         <description>ADCore ADBase screen</description>
