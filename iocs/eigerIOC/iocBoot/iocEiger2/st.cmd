@@ -13,7 +13,7 @@ epicsEnvSet("XSIZE",  "1030")
 epicsEnvSet("YSIZE",  "1065")
 epicsEnvSet("NCHANS", "2048")
 epicsEnvSet("CBUFFS", "500")
-epicsEnvSet("EIGERIP", "164.54.212.29")
+epicsEnvSet("EIGERIP", "164.54.212.28")
 epicsEnvSet("EPICS_DB_INCLUDE_PATH", "$(ADCORE)/db:$(ADEIGER)/db")
 epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES", "5000000")
 
