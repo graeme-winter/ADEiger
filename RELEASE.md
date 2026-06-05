@@ -9,7 +9,67 @@ https://github.com/areaDetector/ADEiger/tags
 
 Release Notes
 =============
-R3-5 (July XXX, 2022)
+R3-6 (April XXX, 2026)
+----
+* Added support for the Stream2 interface.  Stream2 supports multiple thresholds.
+   - Added new StreamVersion record to select the Stream or Stream2 interface.
+   - LZ4 compression on the Stream2 interface uses block-mode compression, which is
+     different from the LZ4 compression on the Stream interface. A new codec called
+     "lz4hdf5" was addeded to ADSupport R1-11 to support this compression.
+     Support for lz4hdf5 compression was added to NDPluginCodec in ADCore R3-15, and to the 
+     ImageJ NTNDArrayViewer plugin in ADViewers R1-8.
+* Added support for the v2024.2 format in the FileWriter interface, which also supports multiple thresholds.
+  - Added new FWHDF5Format record for the FileWriter interface to select the Legacy of v2024.2 format.
+* Added support for reading multiple thresholds.
+  This is only for Eiger2 and Pilatus4 detectors, not older Pilatus or Eiger models.
+  - If DataSource=Stream with Stream2 or DataSource=FileWriter v2024.2 and if 
+    more than one threshold is enabled then the driver creates one NDArray for each threshold.
+  - The driver sends the NDArrays for all thresholds on asyn address 0. It sends
+    only the NDArray for threshold N on address N (N=1 to number of enabled thresholds).
+  - Plugins can thus use asyn address 0 to receive NDArrays for all thresholds, address 1
+    to receive only the first enabled threshold, etc.
+  - Previously NDArray callbacks for the Monitor interface used asyn address=1.
+    This conflicts with the use of address 1 for the first threshold.
+    The monitor callbacks were changed to use address=10.
+    This breaks backwards compatibility, but is easy to adjust.
+  - When using Stream2 or FileWriter the driver now adds 2 new NDAttributes for each NDArray.
+    These attributes identify which threshold that NDArray contains.
+    - ThresholdNumber is an NDAttrInt32 attribute containing the threshold number (1, 2, ...). 
+    - ThresholdEnergy is an NDAttrFloat64 attribute containing the energy of the threshold in units of eV.
+* Added support for Pilatus4 detectors.  Thanks to Tejus Guruswamy for this.
+* Added new SignedData record to select whether NDArrays will be signed or unsigned integers.
+  - The data sent from the Eiger server is unsigned 32-bit, 16-bit, or 8-bit integers,
+    depending on the exposure time.
+  - Bad pixels and pixel gaps are flagged with very large positive values, e.g. 2^32-1, 2^32-2, etc.
+    This allows the use of nearly the full integer range for the data values.
+    However, it is quite inconvenient for data viewing, since autoscaling will usually lead to actual data
+    values being all black.
+  - The SignedData record can be used to set the NDArray data types to signed.
+    This allows autoscaling to work well, since the flagged pixel values will now be -1 or -2.
+    It does, however, reduce the available count range by a factor of 2.
+      - For 32-bit data this will be a problem when there are over 2.1e9 counts per pixel.
+        Since the maximum count rate is about 2e6 counts/s it is not an issue for count times less than 1000 seconds.
+      - When the exposure time is less than 0.01 seconds the Eiger switches to 16-bit mode.
+        For 16-bit data this would be a problem when there are over 32K counts per pixel.
+        Since the maximum count rate is about 2e6 counts/s there should never be more than 20K counts in 0.01 seconds,
+        and there should thus be no problem.
+* Added new StreamAsTSSource record. If this is set to Yes, and if the data is coming from the Stream2
+  interface, then the NDArray timeStamp and epicsTS fields are taken from the timestamp information
+  sent by the detector over the Stream2 interface. These are much more accurate than the EPICS timestamps.
+  Thanks to Bruno Martins for this.
+* Added a new Restart record.  Processing this record will restart the DAQ on the Eiger server.
+  After doing this is it necessary to process the Initialize record.
+* Fixed issues with Internal Enable trigger mode.
+  - This mode was broken completely starting with R3-4 in June 2022.
+    It was always sending 0 as the TriggerExposure value due to a bug introduced in the driver.
+  - The TriggerExposure value was only used in Internal Enable mode.
+    This is confusing, since AcquireTime is used for all other modes.
+  - The TriggerExposure record was eliminated, and AcquireTime is now used in Internal Enable mode.
+    - This breaks backwards compatibility, but since Internal Enable mode has not worked at all
+      for 3.5 years, it is likely to have a small impact.
+    - eigerBase.template, the OPI screens, and the Sphinx documentation have been modified to remove this record.
+
+R3-5 (May 14, 2025)
 ----
 * Increased the number of retries from 1 to 2 when waiting for the FileWriter interface to receive a
   file after acquisition completes.
@@ -19,7 +79,11 @@ R3-5 (July XXX, 2022)
 * Fix to only create and access High Voltage parameters on Eiger2.
   This fixes error messages when creating the detector object on Eiger detectors.
 * Allow 8-bit BSLZ4 data in Stream mode with Decompress=No (encoding "bs8-lz4<").
-* Correctly calculate size of BSLZ4 frames without their 12-byte header
+* Correctly calculate size of BSLZ4 frames without their 12-byte header.
+* Use the updateTimeStamps method to set the NDArray timestamps.
+* Add units to the metadata items in OPI screens.
+* Add LICENSE file.
+* Removed obsolete documentation/ directory.
 
 R3-4 (June 10, 2022)
 ----

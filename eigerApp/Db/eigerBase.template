@@ -80,6 +80,13 @@ record(ai, "$(P)$(R)YPixelSize_RBV")
 # Detector Status #
 ###################
 
+record(busy, "$(P)$(R)Restart") {
+   field(DTYP, "asynInt32")
+   field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))RESTART")
+   field(ZNAM, "Done")
+   field(ONAM, "Restart")
+}
+
 record(busy, "$(P)$(R)Initialize") {
    field(DTYP, "asynInt32")
    field(OUT, "@asyn($(PORT),$(ADDR),$(TIMEOUT))INITIALIZE")
@@ -107,9 +114,9 @@ record(ai, "$(P)$(R)Temp0_RBV")
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))TH_TEMP_0")
     field(EGU,  "C")
-    field(SCAN, "I/O Intr")
     field(VAL,  "0")
     field(PREC, "1")
+    field(SCAN, "I/O Intr")
 }
 
 record(ai, "$(P)$(R)Humid0_RBV")
@@ -117,9 +124,9 @@ record(ai, "$(P)$(R)Humid0_RBV")
     field(DTYP, "asynFloat64")
     field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))TH_HUMID_0")
     field(EGU,  "%")
-    field(SCAN, "I/O Intr")
     field(VAL,  "0")
     field(PREC, "1")
+    field(SCAN, "I/O Intr")
 }
 
 #####################
@@ -243,27 +250,6 @@ record(bi,"$(P)$(R)ManualTrigger_RBV") {
     field(SCAN, "I/O Intr")
 }
 
-# Exposure for triggers on INTE mode
-record(ao, "$(P)$(R)TriggerExposure")
-{
-    field(PINI, "YES")
-    field(DTYP, "asynFloat64")
-    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_EXPOSURE")
-    field(DESC, "Trigger Exposure for INTE mode")
-    field(EGU,  "s")
-    field(PREC, "3")
-}
-
-record(ai, "$(P)$(R)TriggerExposure_RBV")
-{
-    field(DTYP, "asynFloat64")
-    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))TRIGGER_EXPOSURE")
-    field(DESC, "Trigger Exposure for INTE mode")
-    field(EGU,  "s")
-    field(PREC, "3")
-    field(SCAN, "I/O Intr")
-}
-
 # Trigger the detector
 record(ao, "$(P)$(R)Trigger") {
     field(DTYP, "asynInt32")
@@ -302,6 +288,7 @@ record(mbbi,"$(P)$(R)ROIMode_RBV") {
     field(ONST, "4M")
     field(ONVL, "1")
     field(ONSV, "MINOR")
+    field(SCAN, "I/O Intr")
 }
 
 # Compression algorithm selection
@@ -355,6 +342,7 @@ record(mbbi,"$(P)$(R)DataSource_RBV") {
     field(ONST, "FileWriter")
     field(TWVL, "2")
     field(TWST, "Stream")
+    field(SCAN, "I/O Intr")
 }
 
 # Flatfield correction applied
@@ -446,6 +434,24 @@ record(bi,"$(P)$(R)AutoSummation_RBV") {
     field(ONAM, "Enable")
     field(ZSV,  "NO_ALARM")
     field(OSV,  "MINOR")
+    field(SCAN, "I/O Intr")
+}
+
+# Set data as signed
+record(bo,"$(P)$(R)SignedData") {
+    field(PINI, "YES")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SIGNED_DATA")
+    field(VAL,  "0")
+    field(ZNAM, "Unsigned")
+    field(ONAM, "Signed")
+}
+
+record(bi,"$(P)$(R)SignedData_RBV") {
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR),$(TIMEOUT))SIGNED_DATA")
+    field(ZNAM, "Unsigned")
+    field(ONAM, "Signed")
     field(SCAN, "I/O Intr")
 }
 

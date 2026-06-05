@@ -21,7 +21,7 @@ eigerDetectorConfig("$(PORT)", "$(EIGERIP)", 0, 0)
 dbLoadRecords("$(ADEIGER)/db/eiger2.template", "P=$(PREFIX),R=CAM:,PORT=$(PORT),ADDR=0,TIMEOUT=1")
 
 # Debug
-# asynSetTraceMask("$(PORT)", 0, 0x11)
+asynSetTraceIOMask($(PORT), 0, ESCAPE)
 
 # Create a standard arrays plugin
 NDStdArraysConfigure("Image1", 5, 0, "$(PORT)", 0, 0)
@@ -32,7 +32,7 @@ dbLoadRecords("$(ADCORE)/db/NDStdArrays.template", "P=$(PREFIX),R=image2:,PORT=I
 
 # Load all other plugins using commonPlugins.cmd
 < $(ADCORE)/iocBoot/commonPlugins.cmd
-set_requestfile_path("$(ADEIGER)/eigerApp/Db")
+set_requestfile_path("$(ADEIGER)/db")
 
 iocInit()
 

@@ -3,10 +3,10 @@ beginScreenProperties
 major 4
 minor 0
 release 1
-x 352
-y 88
+x 280
+y 99
 w 1425
-h 970
+h 1010
 font "helvetica-medium-r-18.0"
 ctlFont "helvetica-bold-r-10.0"
 btnFont "helvetica-medium-r-18.0"
@@ -67,7 +67,7 @@ major 4
 minor 0
 release 0
 x 5
-y 735
+y 760
 w 350
 h 165
 
@@ -80,7 +80,7 @@ major 4
 minor 1
 release 0
 x 5
-y 735
+y 760
 w 350
 h 165
 fgColor rgb 0 0 0
@@ -153,9 +153,9 @@ major 4
 minor 0
 release 0
 x 715
-y 500
+y 525
 w 350
-h 155
+h 205
 
 beginGroup
 
@@ -166,19 +166,19 @@ major 4
 minor 1
 release 0
 x 715
-y 500
+y 525
 w 350
-h 155
+h 205
 fgColor rgb 0 0 0
 bgColor rgb 65280 65280 65280
 topShadowColor rgb 65280 65280 65280
 botShadowColor rgb 0 0 0
 displaySource "file"
-file "eigerStream.edl"
+file "eiger2Stream.edl"
 sizeOfs 5
 numDsps 1
 displayFileName {
-  0 "eigerStream.edl"
+  0 "eiger2Stream.edl"
 }
 noScroll
 endObjectProperties
@@ -241,7 +241,7 @@ release 0
 x 5
 y 470
 w 350
-h 260
+h 285
 
 beginGroup
 
@@ -254,7 +254,7 @@ release 0
 x 5
 y 470
 w 350
-h 260
+h 285
 fgColor rgb 0 0 0
 bgColor rgb 65280 65280 65280
 topShadowColor rgb 65280 65280 65280
@@ -282,7 +282,7 @@ major 4
 minor 0
 release 0
 x 715
-y 660
+y 735
 w 350
 h 105
 
@@ -295,7 +295,7 @@ major 4
 minor 1
 release 0
 x 715
-y 660
+y 735
 w 350
 h 105
 fgColor rgb 0 0 0
@@ -327,7 +327,7 @@ release 0
 x 715
 y 40
 w 350
-h 455
+h 480
 
 beginGroup
 
@@ -340,7 +340,7 @@ release 0
 x 715
 y 40
 w 350
-h 455
+h 480
 fgColor rgb 0 0 0
 bgColor rgb 65280 65280 65280
 topShadowColor rgb 65280 65280 65280
@@ -411,7 +411,7 @@ major 4
 minor 0
 release 0
 x 715
-y 770
+y 845
 w 350
 h 160
 
@@ -424,7 +424,7 @@ major 4
 minor 1
 release 0
 x 715
-y 770
+y 845
 w 350
 h 160
 fgColor rgb 0 0 0
@@ -497,7 +497,7 @@ major 4
 minor 0
 release 0
 x 1070
-y 835
+y 860
 w 350
 h 110
 
@@ -510,7 +510,7 @@ major 4
 minor 1
 release 0
 x 1070
-y 835
+y 860
 w 350
 h 110
 fgColor rgb 0 0 0
@@ -583,7 +583,7 @@ major 4
 minor 0
 release 0
 x 360
-y 585
+y 560
 w 350
 h 380
 
@@ -596,7 +596,7 @@ major 4
 minor 1
 release 0
 x 360
-y 585
+y 560
 w 350
 h 380
 fgColor rgb 0 0 0
@@ -628,7 +628,7 @@ release 0
 x 360
 y 375
 w 350
-h 205
+h 180
 
 beginGroup
 
@@ -641,7 +641,7 @@ release 0
 x 360
 y 375
 w 350
-h 205
+h 180
 fgColor rgb 0 0 0
 bgColor rgb 65280 65280 65280
 topShadowColor rgb 65280 65280 65280
@@ -671,7 +671,7 @@ release 0
 x 1070
 y 600
 w 350
-h 230
+h 255
 
 beginGroup
 
@@ -684,7 +684,7 @@ release 0
 x 1070
 y 600
 w 350
-h 230
+h 255
 fgColor rgb 0 0 0
 bgColor rgb 65280 65280 65280
 topShadowColor rgb 65280 65280 65280

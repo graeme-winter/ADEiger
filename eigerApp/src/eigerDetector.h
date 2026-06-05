@@ -1,6 +1,7 @@
 #ifndef EIGER_DETECTOR_H
 #define EIGER_DETECTOR_H
 
+#include <atomic>
 #include <map>
 #include <vector>
 
@@ -10,7 +11,8 @@
 
 typedef enum {
   Eiger1,
-  Eiger2
+  Eiger2,
+  Pilatus4,
 } eigerModel_t;
 
 // areaDetector NDArray data source
@@ -26,6 +28,7 @@ typedef enum {
 #define EigFWFreeStr               "FW_FREE"
 #define EigFWStateStr              "FW_STATE"
 #define EigFWImgNumStartStr        "FW_IMG_NUM_START"
+#define EigFWHD5FormatStr          "FWHDF5_FORMAT"
 
 // Acquisition Metadata Parameters
 #define EigWavelengthStr           "WAVELENGTH"
@@ -45,7 +48,6 @@ typedef enum {
 #define EigThreshold2EnableStr     "THRESHOLD2_ENABLE"
 #define EigThresholdDiffEnableStr  "THRESHOLD_DIFF_ENABLE"
 #define EigTriggerStr              "TRIGGER"
-#define EigTriggerExpStr           "TRIGGER_EXPOSURE"
 #define EigNTriggersStr            "NUM_TRIGGERS"
 #define EigManualTriggerStr        "MANUAL_TRIGGER"
 #define EigTriggerStartDelayStr    "TRIGGER_START_DELAY"
@@ -54,9 +56,16 @@ typedef enum {
 // ROI Mode is only available on Eiger 9M and 16M
 #define EigROIModeStr              "ROI_MODE"
 
+// Pilatus4 Parameters
+#define EigThreshold3Str           "THRESHOLD3"
+#define EigThreshold3EnableStr     "THRESHOLD3_ENABLE"
+#define EigThreshold4Str           "THRESHOLD4"
+#define EigThreshold4EnableStr     "THRESHOLD4_ENABLE"
+
 // Detector Status Parameters
 #define EigStateStr                "STATE"
 #define EigErrorStr                "ERROR"
+#define EigRestartStr              "RESTART"
 #define EigInitializeStr           "INITIALIZE"
 #define EigThTemp0Str              "TH_TEMP_0"
 #define EigThHumid0Str             "TH_HUMID_0"
@@ -73,6 +82,7 @@ typedef enum {
 #define EigHVResetTimeStr          "HV_RESET_TIME"
 #define EigHVResetStr              "HV_RESET"
 #define EigHVStateStr              "HV_STATE"
+#define EigSignedDataStr           "SIGNED_DATA"
 
 // File Saving Parameters
 #define EigSaveFilesStr            "SAVE_FILES"
@@ -91,6 +101,8 @@ typedef enum {
 #define EigStreamDroppedStr        "STREAM_DROPPED"
 #define EigStreamStateStr          "STREAM_STATE"
 #define EigStreamDecompressStr     "STREAM_DECOMPRESS"
+#define EigStreamVersionStr        "STREAM_VERSION"
+#define EigStreamAsTsSourceStr     "STREAM_AS_TIMESTAMP_SOURCE"
 
 // Epsilon Parameters (minimum amount of change allowed)
 #define EigWavelengthEpsilonStr    "WAVELENGTH_EPSILON"
@@ -121,6 +133,7 @@ public:
     void reapTask     (void);
     void monitorTask  (void);
     void streamTask   (void);
+    void restartTask();
     void initializeTask();
 
     enum roi_mode
@@ -145,12 +158,17 @@ public:
         TRIGGER_MODE_EXTG
     };
 
+    enum stream_version
+    {
+        STREAM_VERSION_STREAM,
+        STREAM_VERSION_STREAM2
+    };
+
 protected:
     // Driver-only parameters
     EigerParam *mDataSource;
     EigerParam *mFWAutoRemove;
     EigerParam *mTrigger;
-    EigerParam *mTriggerExp;
     EigerParam *mManualTrigger;
     EigerParam *mTriggerStartDelay;
     EigerParam *mArmed;
@@ -162,11 +180,13 @@ protected:
     EigerParam *mFilePerms;
     EigerParam *mMonitorTimeout;
     EigerParam *mStreamDecompress;
+    EigerParam *mRestart;
     EigerParam *mInitialize;
     EigerParam *mHVResetTime;
     EigerParam *mHVReset;
     EigerParam *mWavelengthEpsilon;
     EigerParam *mEnergyEpsilon;
+    EigerParam *mSignedData;
 
     // Eiger parameters: metadata
     EigerParam *mDescription;
@@ -184,6 +204,12 @@ protected:
     EigerParam *mCompressionAlgo;
     EigerParam *mROIMode;
     EigerParam *mAutoSummation;
+
+    //Pilatus4 parameters
+    EigerParam *mThreshold3;
+    EigerParam *mThreshold3Enable;
+    EigerParam *mThreshold4;
+    EigerParam *mThreshold4Enable;
 
     // Eiger parameters: status
     EigerParam *mState;
@@ -206,6 +232,7 @@ protected:
     EigerParam *mFWState;
     EigerParam *mFWFree;
     EigerParam *mFWClear;
+    EigerParam *mFWHDF5Format;
 
     // Eiger parameters: monitor interface
     EigerParam *mMonitorEnable;
@@ -216,6 +243,8 @@ protected:
     EigerParam *mStreamEnable;
     EigerParam *mStreamDropped;
     EigerParam *mStreamState;
+    EigerParam *mStreamVersion;
+    EigerParam *mStreamAsTsSource;
 
     // Base class parameters
     EigerParam *mAcquireTime;
@@ -234,13 +263,18 @@ private:
     char mHostname[512];
     RestAPI mApi;
     StreamAPI *mStreamAPI;
+    Stream2API *mStream2API;
     eigerModel_t mEigerModel;
     eigerAPIVersion_t mAPIVersion;
     epicsEvent mStartEvent, mStopEvent, mTriggerEvent, mStreamEvent, mStreamDoneEvent,
-            mPollDoneEvent, mInitializeEvent;
+            mPollDoneEvent, mRestartEvent, mInitializeEvent;
     epicsMessageQueue mPollQueue, mDownloadQueue, mParseQueue, mSaveQueue,
             mReapQueue;
-    bool mPollStop, mPollComplete, mStreamComplete;
+    std::atomic<bool> mPollStop;
+    // Access to this variable is synchronized by mPollQueue and mPollDoneEvent
+    bool mPollComplete;
+    // Access to this variable is synchronized by mStreamEvent and mStreamDoneEvent
+    bool mStreamComplete;
     unsigned int mFrameNumber;
     uid_t mFsUid, mFsGid;
     EigerParamSet mParams;
