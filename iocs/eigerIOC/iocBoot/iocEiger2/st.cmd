@@ -6,26 +6,22 @@ errlogInit(20000)
 dbLoadDatabase("$(TOP)/dbd/eigerDetectorApp.dbd")
 eigerDetectorApp_registerRecordDeviceDriver(pdbbase)
 
-epicsEnvSet("PREFIX", "13EIG2:")
+epicsEnvSet("PREFIX", "24ID-C-EIG:")
 epicsEnvSet("PORT",   "EIG")
 epicsEnvSet("QSIZE",  "20")
-epicsEnvSet("XSIZE",  "1030")
-epicsEnvSet("YSIZE",  "1065")
+epicsEnvSet("XSIZE",  "4148")
+epicsEnvSet("YSIZE",  "4362")
 epicsEnvSet("NCHANS", "2048")
 epicsEnvSet("CBUFFS", "500")
-# This is an Eiger2 1M
-#epicsEnvSet("EIGERIP", "10.54.160.13")
-# This is an Eiger2 9M
-epicsEnvSet("EIGERIP", "10.54.160.198")
+epicsEnvSet("EIGERIP", "164.54.212.28")
 epicsEnvSet("EPICS_DB_INCLUDE_PATH", "$(ADCORE)/db:$(ADEIGER)/db")
 epicsEnvSet("EPICS_CA_MAX_ARRAY_BYTES", "5000000")
 
 eigerDetectorConfig("$(PORT)", "$(EIGERIP)", 0, 0)
-dbLoadRecords("$(ADEIGER)/db/eiger2.template", "P=$(PREFIX),R=cam1:,PORT=$(PORT),ADDR=0,TIMEOUT=1")
+dbLoadRecords("$(ADEIGER)/db/eiger2.template", "P=$(PREFIX),R=CAM:,PORT=$(PORT),ADDR=0,TIMEOUT=1")
 
 # Debug
 asynSetTraceIOMask($(PORT), 0, ESCAPE)
-#asynSetTraceMask("$(PORT)", 0, ERROR|FLOW)
 
 # Create a standard arrays plugin
 NDStdArraysConfigure("Image1", 5, 0, "$(PORT)", 0, 0)
@@ -41,7 +37,7 @@ set_requestfile_path("$(ADEIGER)/db")
 iocInit()
 
 # Avoid deluge of messages when debugging
-#dbpf $(PREFIX)cam1:PoolUsedMem.SCAN Passive
+# dbpf $(PREFIX)CAM:PoolUsedMem.SCAN Passive
 
 # save things every thirty seconds
 create_monitor_set("auto_settings.req", 30, "P=$(PREFIX)")

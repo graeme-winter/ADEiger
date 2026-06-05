@@ -127,7 +127,7 @@ text {
 	display[1] {
 		label="Eiger Detector Control"
 		name="eigerDetector.adl"
-		args="P=13EIG1:, R=cam1:"
+		args="P=S24ID-C-EIG:, R=CAM:"
 	}
 	display[2] {
 		label="----------------------------------------------"
@@ -141,7 +141,7 @@ text {
 	display[5] {
 		label="ADCore ADBase screen"
 		name="ADBase.adl"
-		args="P=13EIG1:, R=cam1:"
+		args="P=S24ID-C-EIG:, R=CAM:"
 	}
 	display[6] {
 		label="----------------------------------------------"
